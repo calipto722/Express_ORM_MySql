@@ -6,7 +6,7 @@ block contenido
             li
                 a(href="/estudiantes/creaEstudiantes" class="text-green-600 hover:text-green-800") Agregar Estudiante
             li
-                a(href="/estudiantes/consultarEstudiante" class="text-green-600 hover:text-green-800") Consultar Estudiante
+                a(href="/estudiantes/listarEstudianteporCurso" class="text-green-600 hover:text-green-800") Consultar Estudiante por Curso
 
     .py-10
         h1.text-4xl.my-10.font-extrabold.text-center Proyecto
@@ -23,7 +23,6 @@ block contenido
                     th.text-left.text-black.border-white.uppercase.px-6.py-3 Acciones
             tbody
                 if Object.keys(estudiantes).length>0 
-                    p.px-6.py-4.text-green-600 objet
                     each estudiante, key in estudiantes
                         p.px-6.py-4.tex-green-600 antes
                         tr

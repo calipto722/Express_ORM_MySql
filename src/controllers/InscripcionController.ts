@@ -3,19 +3,20 @@ import { CursoEstudiante } from '../models/cursoEstudianteModel';
 import { AppDataSource } from '../db/conexion';
 import { Estudiante } from '../models/estudianteModel';
 import { Curso } from '../models/cursoModel';
+import app from '../app';
 
 //const Joi = require('joi');
 var inscripciones: CursoEstudiante[];
 export const consultarInscripciones= async(req:Request, res:Response)=>{
             try {
                 const cursoEstudianteRepository = AppDataSource.getRepository(CursoEstudiante);
-                const resultado = await cursoEstudianteRepository.find({
+                 inscripciones = await cursoEstudianteRepository.find({
                     relations: ['curso', 'estudiante'], 
                 });
         
                res.render('listarInscripciones', {
                     pagina: 'Listar Inscripciones',
-                   inscripciones: resultado
+                   inscripciones
                })
             } catch (err: unknown) {
                 if (err instanceof Error) {
@@ -73,46 +74,45 @@ export const consultarxCurso= async(req:Request, res:Response)=>{
     }
 
 
+
+
 export const inscribir = async(req:Request, res:Response) => {
 
-    const { estudiante_id, curso_id} = req.body;
+    const { estudiante_id, curso_id } = req.body;
+    const estudianteId = parseInt(estudiante_id as string, 10);
+    const cursoId = parseInt(curso_id as string, 10);
+    console.log(estudianteId);
+    console.log(cursoId);
     try {
-        await AppDataSource.transaction(async transactionalEntityManager => {
-            // Verificar si el estudiante existe
-            const estudiante = await transactionalEntityManager.findOne(Estudiante, { where: { id: estudiante_id } });
-            if (!estudiante) {
-                return res.status(400).json({ mens: 'Estudiante no existe' });
-            }
+        const estudianteRepository = AppDataSource.getRepository(Estudiante);
+        const cursoRepository = AppDataSource.getRepository(Curso);
+        const estudiante = await estudianteRepository.findOneBy({ id: estudianteId });
+        if (!estudiante) {
+            return res.status(404).json({ mens: 'Estudiante no encontrado' });
+        }
 
-            // Verificar si el curso existe
-            const curso = await transactionalEntityManager.findOne(Curso, { where: { id: curso_id } });
-            if (!curso) {
-                return res.status(400).json({ mens: 'Curso no existe' });
-            }
+        const curso = await cursoRepository.findOneBy({ id: cursoId });
+        if (!curso) {
+            return res.status(404).json({ mens: 'Curso no encontrado' });
+        }
 
-            // Verificar si ya está inscrito
-            const existeInscripcion = await transactionalEntityManager.findOne(CursoEstudiante, { where: { estudiante: estudiante_id, curso: curso_id } });
-            if (existeInscripcion) {
-                return res.status(400).json({ mens: 'El estudiante ya está inscrito en este curso' });
-            }
-
-            // Insertar inscripción
-            const cursoEstudiante = new CursoEstudiante();
-            cursoEstudiante.estudiante = estudiante;
-            cursoEstudiante.curso = curso;
-            await transactionalEntityManager.save(cursoEstudiante);
-
-            res.redirect('/inscripciones/listarInscripciones');
-        });
-    } 
-  catch(err){
-      if (err instanceof Error){
-         res.status(500).send(err.message);
-      }
-  }
+        const inscripcion = new CursoEstudiante();
+        inscripcion.estudiante = estudiante;
+        inscripcion.curso = curso;
+        inscripcion.nota = 0;
+        inscripcion.fecha = new Date();
+        await AppDataSource.manager.save(inscripcion);
+        inscripciones=await AppDataSource.manager.find(CursoEstudiante, {relations: ['curso', 'estudiante']});
+        res.render('listarInscripciones', {
+            pagina: 'Listar Inscripciones',
+            inscripciones
+        })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message);
+        }
+    }
 }
-
-    
 export const cancelarInscripcion= async(req:Request, res:Response) => {
         const { estudiante_id, curso_id } = req.params;
 

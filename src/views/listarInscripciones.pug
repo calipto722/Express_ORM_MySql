@@ -24,11 +24,11 @@ block contenido
                            
                             tr
                                 td.px-6.py-4.text-green-600= inscripcion.estudiante.nombre
-                                td.px-6.py-4.text-green-600= inscripcion.materia.nombre
+                                td.px-6.py-4.text-green-600= inscripcion.curso.nombre
                                 td.px-6.py-4.text-green-600= inscripcion.nota
                                 td.px-6.py-4
-                                    a.text-blue-500(href=`/inscripciones/modificaInscripcion/${inscripcion.id}`) Editar
-                                    a.text-red-500.ml-2(href="#", onclick=`eliminarEstudiante('${inscripcion.id}')`) Eliminar
+                                    a.text-blue-500(, href=`/inscripciones/modificaInscripcion/${inscripcion.estudiante.id}/${inscripcion.curso.id}`) Editar
+                                    a.text-red-500.ml-2(href="#", onclick=`eliminarEstudiante('${inscripcion.estudiante.id}')`) Eliminar
                 else
                     tr
                         td.px-7.py-4.text-4x1.text-center.uppercase.font-extrabold(colspan="5") No se encontró ningúna Inscripción

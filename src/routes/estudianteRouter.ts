@@ -1,5 +1,7 @@
 import express from 'express';
 import { insertar, modificar, eliminar, validar, consultarUno, consultarTodos, consultarEstudiante } from '../controllers/EstudianteController';
+import { consultarxCurso } from '../controllers/InscripcionController';
+import { obtenerlistadeCursos } from '../controllers/CursoController';
 
 
 const router = express.Router();
@@ -14,7 +16,15 @@ router.get('/consultarEstudiante', async (req, res) => {
 
     });
 });
-router.get( '/consultarEstudiante/:id',consultarEstudiante);
+router.get('/listarEstudianteporCurso',async (req, res) => {
+    const cursos= await obtenerlistadeCursos();
+    res.render('listarEstudianteporCurso', {
+        pagina: 'Listar Estudiantes por Curso',
+        cursos
+    });
+})
+router.get('/listarEstudianteporCurso/:curso_id',consultarxCurso);
+router.get( '/consultarEstudiante/:estudiante_id',consultarEstudiante);
 
 router.get('/creaEstudiantes', (req, res) => {
     res.render('creaEstudiantes', {

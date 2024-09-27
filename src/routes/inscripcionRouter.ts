@@ -17,7 +17,7 @@ router.get("/creaInscripcion",async (req, res) => {
         estudiantes,
     });
 });
-router.post('/:estudiante_id/:curso_id',inscribir);
-router.delete('/:estudiante_id/:curso_id',cancelarInscripcion);
-router.post('/:estudiante_id/:curso_id/calificar',calificar);
+router.post('/',inscribir);
+router.get('/modificaInscripcion/:estudiantes_id/:curso_id',calificar);
+router.delete('/:estudiantes_id/:curso_id',cancelarInscripcion);
 export default router;

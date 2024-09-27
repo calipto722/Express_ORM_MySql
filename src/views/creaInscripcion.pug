@@ -17,19 +17,15 @@ block contenido
                   
                     
                     div
-                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="estudiante" ) Estudiante 
-                        select#estudiante.w-full.px-3.py-2.border.border-gray-300.rounded-md( name="estudiante" )
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="estudiante_id" ) Estudiante 
+                        select#estudiante.w-full.px-3.py-2.border.border-gray-300.rounded-md( name="estudiante_id" )
                              each estudiante in estudiantes
                                 option(value=estudiante.id selected=estudiante.id)= estudiante.nombre
 
                     div
-                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="nombre") Nombre
-                        select#estudiante.w-full.px-3.py-2.border.border-gray-300.rounded-md(name="curso" )
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="curso_id") Nombre
+                        select#curso.w-full.px-3.py-2.border.border-gray-300.rounded-md(name="curso_id" )
                              each curso in cursos
                                 option(value=curso.id selected=curso.id)= curso.nombre
                     div
-                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="nota") Nota
-                        input(type="number" name="nota" min=0 max=10) 
-                    
-                    div
-                        input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="Registrar Estudiante")
+                        input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="Registrar Estudiantes")

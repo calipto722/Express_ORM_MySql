@@ -13,16 +13,10 @@ block contenido
 
         .mt-8.mx-auto.max-w-md
             .bg-white.py-8.px-4.shadow
-                
-                form(method="GET", id="formulario")
-                        div
-                            label.block.text-sm.font-extrabold.text-gray-700(for='profesor_id') Profesores
-                            select#profesor.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Curso" type="text" name="profesor_id")
-                                 each curso in cursos
-                                       option(value=curso.id)= curso.nombre
+                form(action="#", method="GET")
+                    label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="nombreCurso") Nombre del Curso: 
+                    select#nombreCurso.w-full.px-3.py-2.border.border-gray-300.rounded-md(name="nombreCurso")
+                        each curso in cursos
+                            option(value=curso_id selected=curso_id)= curso.nombre
 
-                        button.bg-blue-500.text-white.px-4.py-2.rounded-md(type='submit') Buscar Curso
-            
-                block resultados 
-
-                 
+                    a(href= `/estudiantes/listarEstudiantes/${curso_id}`  class="text-gray-600 hover:text-gray-800") Cancelar

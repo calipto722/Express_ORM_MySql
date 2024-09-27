@@ -1,0 +1,28 @@
+extends ./index 
+
+block contenido
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Universidad
+            span.font-normal Curso 
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        if errores
+            div(class="max-w-md mx-auto my-10")
+                each error in errores
+                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-extrabold= error.msg
+
+        .mt-8.mx-auto.max-w-md
+            .bg-white.py-8.px-4.shadow
+                
+                form(method="GET", id="formulario")
+                        div
+                            label.block.text-sm.font-extrabold.text-gray-700(for='profesor_id') Profesores
+                            select#profesor.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Curso" type="text" name="profesor_id")
+                                 each curso in cursos
+                                       option(value=curso.id)= curso.nombre
+
+                        button.bg-blue-500.text-white.px-4.py-2.rounded-md(type='submit') Buscar Curso
+            
+                block resultados 
+
+                 

@@ -1,0 +1,53 @@
+extends ./index
+block contenido
+    .flex.justify-end.mb-4
+        ul.flex.space-x-4
+            li
+                a(href="/cursos/creaCursos" class="text-green-600 hover:text-green-800") Agregar Cursos 
+            li 
+                a(href="/cursos/listarEstudianteporCurso" class="text-green-600 hover:text-green-800") Consultar Estudiantes por Curso
+
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Proyecto
+            span.font-normal Universidad
+        h2.text-center.text-2xl.font-extrabold= pagina
+        
+        table.table-auto.w-full.mt-4
+            thead
+                tr
+                    th.text-left.dorder-white.text-black.uppercase.px-6.py-3 Nombre
+                    th.text-left.dorder-white.text-black.uppercase.px-6.py-3 Descripción
+                    th.text-left.dorder-white.text-black.uppercase.px-6.py-3 Profesor
+                   
+            tbody
+                each curso in cursos
+                    tr
+                        td.px-6.py-4=curso.nombre
+                        td.px-6.py-4=curso.descripcion 
+                        td.px-6.py-4=curso.profesor.nombre
+                        td.px-6.py-4
+                            a.text-blue-500(href=`/cursos/modificaCurso/${curso.id}`) Editar
+                            a.text-red-500.ml-2(href="#", onclick=`eliminarCurso('${curso.id}')`) Eliminar
+
+block scripts 
+    script.
+        function eliminarCurso(id) {
+            if (confirm("¿Desea eliminar el curso?")) {
+                fetch(`/cursos/${id}`, { 
+                    method: "DELETE" 
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.mensaje === "Curso eliminado") {
+                        alert("Curso eliminado con exito.");
+                        window.location.reload(true);
+                    } else {
+                        alert(data.mensaje);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error al eliminar el curso.");
+                });
+            }
+        }

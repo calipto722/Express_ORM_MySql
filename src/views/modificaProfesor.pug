@@ -1,0 +1,40 @@
+extends index
+block contenido
+    .py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Proyecto
+            span.font-normal Universidad
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        if errores
+            div(class="max-w-md mx-auto my-10")
+                each error in errores
+                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-extrabold= error.msg
+
+        .mt-8.mx-auto.max-w-md
+            .bg-white.py-8.px-4.shadow
+                form(method='POST' action=`/profesores/${profesor.id}?_method=PUT` noValidate)
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="dni") DNI
+                        input#dni.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="DNI" type="text" name="dni" value=profesor.dni)
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="nombre") Nombre
+                        input#nombre.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Nombre" type="text" name="nombre" value=profesor .nombre)
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="apellido") Apellido
+                        input#apellido.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Apellido" type="text" name="apellido" value=profesor.apellido)
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-extrabold(for="email") Email
+                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Email" type="text" name="email" value=profesor.email)
+
+                    div 
+                        label.block.tex-sm.uppercase.tex-gray-500.mb-3.font-extrabold(for="profesion") Profesion
+                        input#profesion.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(placeholder="profesion" type="text" name="profesion" value=profesor.profesion)  
+                    div 
+                        label.block.text-sm.uppercase.tex-gray-500.mb-3.font-extrabold(for="telefono") Telefono
+                        input#telefono.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(placeholder="telefono" type="text" name="telefono" value=profesor.telefono)
+                        
+                    button.bg-blue-500.text-white.px-4.py-2.rounded-md.mt-4(button type="post") Modificar Estudiante

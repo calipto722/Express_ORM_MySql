@@ -6,29 +6,28 @@ import { Curso } from '../models/cursoModel';
 
 var profesores: Profesor[];
 
-export const validar = () => [
-
+export const validarprofesor = () => [
     check('dni')
         .notEmpty().withMessage('El DNI es obligatorio')
-        .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
+        .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres')
+        .isNumeric().withMessage('El ID debe ser un número'),
     check('nombre').notEmpty().withMessage('El nombre es obligatorio')
         .isLength({ min: 3 }).withMessage('El Nombre debe tener al menos 3 caracteres'),
-    check('apellido').notEmpty().withMessage('El apellido es obligatorio')
+    check('apellido').notEmpty().withMessage('El apellido es obligatorio')    
         .isLength({ min: 3 }).withMessage('El Apellido debe tener al menos 3 caracteres'),
     check('email').isEmail().withMessage('Debe proporcionar un email válido'),
-    check('profesion').notEmpty().withMessage('La profesión es obligatoria'),
-    check('telefono').notEmpty().withMessage('El telefono es obligatorio'),
-    (req: Request, res: Response, next: () => void) => {
+    (req: Request, res: Response, next: NextFunction) => {
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
             return res.render('creaProfesores', {
                 pagina: 'Crear Profesor',
                 errores: errores.array()
-            })
+            });
         }
         next();
     }
 ];
+
 export const consultartodoslosprofes = async (req: Request, res: Response) => {
     const profesorRepository = AppDataSource.getRepository(Profesor);
 }

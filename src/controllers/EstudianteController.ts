@@ -3,8 +3,7 @@ import { check, validationResult } from 'express-validator';
 import { Estudiante } from '../models/estudianteModel';
 import { AppDataSource } from '../db/conexion';
 import { CursoEstudiante } from '../models/cursoEstudianteModel';
-import { json } from 'stream/consumers';
-//let estudiantes: Array<Estudiante>;
+
 var estudiantes: Estudiante[]; 
 
 export const validar = () => [
@@ -59,6 +58,7 @@ export const listarEstudiantes = async (req: Request, res: Response) => {
 }
 export const consultarEstudiante = async (req: Request, res: Response)=> {
     const { id } = req.params;
+    console.log(req.params.id);
     const estudianteId = Number(id);
     console.log(id);
     try {

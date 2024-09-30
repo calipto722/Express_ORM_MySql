@@ -1,5 +1,5 @@
 import express from "express";
-import { insertar, modificar, eliminar, consultarUno, obtenerlistadeCursos, consultarCurso } from '../controllers/CursoController';
+import { insertar, modificar, eliminar, consultarUno, obtenerlistadeCursos,validarCurso } from '../controllers/CursoController';
 import { validar } from "../controllers/EstudianteController";
 import { consultarProfes, consultarTodosProfes } from "../controllers/ProfesoresController";
 const router=express.Router();
@@ -37,7 +37,7 @@ router.get('/creaCursos', async (req, res) => {
         pagina: 'Crear Cursos',
         profesores});
 });
-router.post('/', insertar);
+router.post('/',validarCurso(), insertar);
 
 //modificar
 router.get('/modificaCurso/:id', async (req, res) => {

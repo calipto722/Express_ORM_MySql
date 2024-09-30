@@ -10,20 +10,16 @@ router.get('/listarEstudiantes', consultarTodos);
 
 //insertar
 
-router.get('/consultarEstudiante', async (req, res) => {
-    res.render('ConsultarEstudiante', {
-        pagina: 'Consultar Estudiante',
-
-    });
-});
 router.get('/listarEstudianteporCurso',async (req, res) => {
-    const cursos= await obtenerlistadeCursos();
+    const cursos= await consultarxCurso(req, res);
     res.render('listarEstudianteporCurso', {
         pagina: 'Listar Estudiantes por Curso',
         cursos
     });
 })
+
 router.get('/listarEstudianteporCurso/:curso_id',consultarxCurso);
+
 router.get( '/consultarEstudiante/:estudiante_id',consultarEstudiante);
 
 router.get('/creaEstudiantes', (req, res) => {

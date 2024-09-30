@@ -24,7 +24,7 @@ block contenido
             tbody
                 if Object.keys(estudiantes).length>0 
                     each estudiante, key in estudiantes
-                        p.px-6.py-4.tex-green-600 antes
+                      
                         tr
                             td.px-6.py-4.text-green-600= estudiante.dni
                             td.px-6.py-4.text-green-600= estudiante.nombre
@@ -34,14 +34,14 @@ block contenido
                                 a.text-blue-500(href=`/estudiantes/modificaEstudiante/${estudiante.id}`) Editar
                                 a.text-red-500.ml-2(href="#", onclick=`eliminarEstudiante('${estudiante.id}')`) Eliminar
                 else if Array.isArray(estudiantes)
-                    p.px-6.py-4.text-green-600 arrya
+                   
                     if estudiantes.length === 0
                             tr
                                 td.px-7.py-4.text-4x1.text-center.uppercase.font-extrabold(colspan="5") No hay estudiantes
-                            p.px-6.py-4.text-green-600 antes de leg 0
+                           
                     else
                         each estudiante in estudiantes
-                            p.px-6.py-4.text-green-600 swa
+                            
                             tr
                                 td.px-6.py-4.text-green-600= estudiante.dni
                                 td.px-6.py-4.text-green-600= estudiante.nombre

@@ -1,5 +1,5 @@
 import express from "express";
-import  {insertar, modificar, eliminar, consultarUno, consultarTodosProfes,validar} from "../controllers/ProfesoresController";
+import  {insertar, modificar, eliminar, consultarUno, consultarTodosProfes, validarprofesor} from "../controllers/ProfesoresController";
 import { consultarTodos } from "../controllers/EstudianteController";
 
 const router=express.Router();
@@ -21,7 +21,7 @@ router.get('/creaProfesores', (req, res) => {
         });
     });
 
-router.post('/', insertar);
+router.post('/',validarprofesor(), insertar);
 
 //modificar
 router.get('/modificaProfesor/:id', async (req, res) => {

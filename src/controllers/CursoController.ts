@@ -4,24 +4,25 @@ import { AppDataSource } from '../db/conexion';
 import { Curso } from '../models/cursoModel';
 import { Profesor } from '../models/profesorModel';
 import { error } from 'console';
+import { CursoEstudiante } from '../models/cursoEstudianteModel';
 
 
 var cursos: Curso[];
-export const validar = () => [
-    check('dni')
-        .notEmpty().withMessage('El DNI es obligatorio')
-        .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 digitos'),
+export const validarCurso = () => [
     check('nombre').notEmpty().withMessage('El nombre es obligatorio')
         .isLength({ min: 3 }).withMessage('El Nombre debe tener al menos 3 caracteres'),
-    check('apellido').notEmpty().withMessage('El apellido es obligatorio')
-        .isLength({ min: 3 }).withMessage('El Apellido debe tener al menos 3 caracteres'),
-    check('email').isEmail().withMessage('Debe proporcionar un email válido'),
-    (req: Request, res: Response, next: NextFunction) => {
+    check('descripcion').notEmpty().withMessage('La descripcion es obligatorio')
+        .isLength({ min: 3 }).withMessage('La Descripcion debe tener al menos 3 caracteres'),
+    async (req: Request, res: Response, next: NextFunction) => {
         const errores = validationResult(req);
+        const profesoresrepository = AppDataSource.getRepository(Profesor);
+        const profesores = await profesoresrepository.find();
+        
         if (!errores.isEmpty()) {
-            return res.render('creaEstudiantes', {
-                pagina: 'Crear Estudiante',
+            return res.render('creaCursos', {
+                pagina: 'Crear Curso',
                 errores: errores.array()
+                ,profesores
             });
         }
         next();
@@ -191,24 +192,20 @@ export const eliminar = async (req: Request, res: Response): Promise<void> => {
         console.log(`ID recibido para eliminar el curso: ${id}`);
         await AppDataSource.transaction(async transactionalEntityManager => {
             const cursoRepository = transactionalEntityManager.getRepository(Curso);
-
-            // Buscar el curso por ID
             const curso = await cursoRepository.findOne({ where: { id: parseInt(id, 10) } });
-
-            // Verificar si el curso existe
-            if (!curso) {
-                res.status(404).json({ mensaje: 'El curso no existe' });
-                return;
+            const cursoComprometido = await transactionalEntityManager.findOne(Curso, { where: { id: parseInt(id) }, relations: ["profesor"] });
+            console.log('Curso encontrado:', curso);
+            
+            if (cursoComprometido !== null) {
+                throw new Error('El curso tiene alumnos asociados.');
             }
-
-            // Eliminar el curso
+            
             const deleteResult = await cursoRepository.delete(id);
 
             if (deleteResult.affected === 1) {
                 res.status(200).json({ mensaje: 'Curso eliminado' }); // Enviar respuesta con estado 200
-            } else {
-                res.status(400).json({ mensaje: 'Error al eliminar el curso' });
-            }
+            } 
+            
         });
     } catch (err: unknown) {
         if (err instanceof Error) {

@@ -1,5 +1,4 @@
 extends ./index
-
 block contenido
     .flex.justify-end.mb-4
         ul.flex.space-x-4
@@ -12,6 +11,10 @@ block contenido
         h1.text-4xl.my-10.font-extrabold.text-center Proyecto
             span.font-normal Universidad
         h2.text-center.text-2xl.font-extrabold= pagina
+        if errores
+            div(class="max-w-md mx-auto my-10")
+                each error in errores
+                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-extrabold= error.msg
 
         table.table-auto.w-full.mt-4
             thead
@@ -19,39 +22,41 @@ block contenido
                     th.text-left.text-black.border-white.uppercase.px-6.py-3 Estudiante
                     th.text-left.text-black.border-white.uppercase.px-6.py-3 Materia
                     th.text-left.text-black.border-white.uppercase.px-6.py-3 Notas
+                    th.text-left.text-black.border-white.uppercase.px-6.py-3 Acciones
             tbody
                 each inscripcion in inscripciones
                            
                             tr
                                 td.px-6.py-4.text-green-600= inscripcion.estudiante.nombre
                                 td.px-6.py-4.text-green-600= inscripcion.curso.nombre
-                                td.px-6.py-4.text-green-600= inscripcion.nota
+                                td.px-6.py-4.text-green-600= inscripcion.nota ? inscripcion.nota : 'Sin calificarse'
                                 td.px-6.py-4
                                     a.text-blue-500(, href=`/inscripciones/modificaInscripcion/${inscripcion.estudiante.id}/${inscripcion.curso.id}`) Editar
-                                    a.text-red-500.ml-2(href="#", onclick=`eliminarEstudiante('${inscripcion.estudiante.id}')`) Eliminar
+                                    a.text-red-500.ml-2(href="#", onclick=`eliminarEstudiante('${inscripcion.estudiante.id}', '${inscripcion.curso.id}')`) Eliminar
                 else
                     tr
                         td.px-7.py-4.text-4x1.text-center.uppercase.font-extrabold(colspan="5") No se encontró ningúna Inscripción
 
 block scripts
     script.
-        function eliminarEstudiante(id) {
-            if (confirm('¿Estás seguro de que deseas eliminar este estudiante?')) {
-                fetch(`/inscripciones/${id}`, {
+        function eliminarEstudiante(estudiante_Id, curso_Id) {
+            console.log(estudiante_Id, curso_Id);
+            if (confirm('¿Estás seguro de que deseas eliminar La Inscripción?')) {
+                fetch(`/inscripciones/${estudiante_Id}/${curso_Id}`, {
                     method: 'DELETE'
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.mensaje === 'Inscripcion eliminada') {
                         alert('Inscripción eliminada con éxito.');
-                        window.location.reload();
+                        window.location.reload(true);
                     } else {
                         alert(data.mensaje);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error al eliminar el estudiante.');
+                    alert('Error al eliminar la inscripción.');
                 });
             }
         }
